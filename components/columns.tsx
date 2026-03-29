@@ -10,8 +10,12 @@ export const columns: ColumnDef<Item>[] = [
     header: "Title",
   },
   {
+    accessorKey: "requester_name",
+    header: "Request By",
+  },
+  {
     accessorKey: "date",
-    header: "Requested Date",
+    header: "Request Date",
     cell: ({ row }) => {
       const dateStr = row.getValue("date") as string;
       return <div>{dateStr.split("T")[0]}</div>;
