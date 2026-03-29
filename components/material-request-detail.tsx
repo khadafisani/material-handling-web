@@ -204,6 +204,17 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
 
   const createDetail = async () => {
     if (!createForm) return;
+
+    if (
+      !createForm.material_name ||
+      !createForm.unit ||
+      !createForm.type ||
+      (createForm.quantity ?? 0) <= 0
+    ) {
+      alert("Please fill all required item fields: Name, Unit, Type, and ensure Quantity is greater than 0.");
+      return;
+    }
+
     setIsCreating(true);
     try {
       const response = await fetch(`http://localhost:3001/api/v1/material-requests/${materialRequest.id}/details`, {

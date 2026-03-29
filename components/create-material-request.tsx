@@ -133,7 +133,19 @@ export function CreateMaterialRequest({ isOpen, onClose }: CreateMaterialRequest
 
   const createDetail = () => {
     if (!createDetailForm) return;
+
+    if (
+      !createDetailForm.material_name ||
+      !createDetailForm.unit ||
+      !createDetailForm.type ||
+      (createDetailForm.quantity ?? 0) <= 0
+    ) {
+      alert("Please fill all required item fields: Name, Unit, Type, and ensure Quantity is greater than 0.");
+      return;
+    }
+
     setIsCreatingDetail(true);
+
     try {
       const newDetail: CreateMaterialRequestDetailItem = {
         id: `temp-${Math.random()}`,
@@ -405,7 +417,6 @@ export function CreateMaterialRequest({ isOpen, onClose }: CreateMaterialRequest
           </DialogContent>
         </Dialog>
 
-        {/* Create Detail Dialog */}
         <Dialog open={isCreateDetailDialogOpen} onOpenChange={setIsCreateDetailDialogOpen}>
           <DialogContent>
             <DialogHeader>
@@ -428,7 +439,7 @@ export function CreateMaterialRequest({ isOpen, onClose }: CreateMaterialRequest
                   <label className="text-sm font-medium">Description</label>
                   <input
                     type="text"
-                    value={createDetailForm.description ?? ""}
+                    value={createDetailForm.description ?? "-"}
                     onChange={(e) => onCreateDetailChange("description", e.target.value)}
                     className="mt-1 w-full rounded-md border px-3 py-2"
                   />

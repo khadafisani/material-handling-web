@@ -88,6 +88,17 @@ export default function CreateMaterialRequestPage() {
 
   const createDetail = () => {
     if (!createDetailForm) return;
+
+    if (
+      !createDetailForm.material_name ||
+      !createDetailForm.unit ||
+      !createDetailForm.type ||
+      (createDetailForm.quantity ?? 0) <= 0
+    ) {
+      alert("Please fill all required item fields: Name, Unit, Type, and ensure Quantity is greater than 0.");
+      return;
+    }
+
     setIsCreatingDetail(true);
     try {
       const newDetail: CreateMaterialRequestDetailItem = {
@@ -217,7 +228,7 @@ export default function CreateMaterialRequestPage() {
     ] as const,
     []
   );
-
+  
   return (
     <div className="flex min-h-screen flex-col items-center bg-zinc-50 px-6 py-8 dark:bg-black">
       <main className="w-full max-w-6xl rounded-lg bg-white p-6 shadow-sm dark:bg-slate-900">
