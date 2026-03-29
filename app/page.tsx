@@ -2,6 +2,7 @@
 import { columns } from "@/components/columns";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import Link from "next/link";
 import { Suspense } from "react";
 
 export default function Home() {
@@ -12,9 +13,9 @@ export default function Home() {
           <h1 className="text-3xl font-bold mb-6">Items Management</h1>
 
           <div className="flex justify-end items-center mb-6">
-            <Button variant="default">
-              Create Request
-            </Button>
+            <Link href="/material-requests/create">
+              <Button variant="default">Create Request</Button>
+            </Link>
           </div>
 
           <Suspense fallback={<div className="text-center py-8">Loading data...</div>}>
