@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Material Handling Web
 
-## Getting Started
+## Note
 
-First, run the development server:
+This project is configured to use Bun as the runtime. If you want to run in NodeJS you have to change script in package.json
 
+If you dont have bun you can install with command below
+
+Windows:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+powershell -c "irm bun.sh/install.ps1 | iex"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Linux or MacOS:
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup & Running the Project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Before running the project, follow these steps:
 
-## Learn More
+1. Install the project dependencies:
+   ```bash
+   bun install
+   ```
+2. Start the development server:
+   ```bash
+   bun run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+## Features
+This application have 2 main features:
+1. **Material Request**
+2. **Material Request Detail**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Pages 
+This application also have 3 pages:
+1. **Root (/)**, that show material request data in table.
+2. **Create Material Request (/material-request/create)**, Form request to **create** material request and the detail.
+3. **View Material Request (/material-request/:id)**, to show material request data and material request detail in table. And in this can you also can edit material request data and edit or remove material request detail that show a dialog.
