@@ -38,4 +38,4 @@ This application have 2 main features:
 This application also have 3 pages:
 1. **Root (/)**, that show material request data in table.
 2. **Create Material Request (/material-request/create)**, Form request to **create** material request and the detail.
-3. **View Material Request (/material-request/:id)**, to show material request data and material request detail in table. And in this can you also can edit material request data and edit or remove material request detail that show a dialog.
+3. **View Material Request (/material-request/:id)**, to show material request data and material request detail in table. And in this can you also can edit material request data and edit or remove material request detail.
