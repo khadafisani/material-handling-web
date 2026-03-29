@@ -59,6 +59,7 @@ export interface MaterialRequestDetailItem {
 export interface MaterialRequestDetailData {
   id: string;
   title: string;
+  requester_name: string;
   date: string;
   status_name: string;
   note?: string;
@@ -89,6 +90,7 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
   const [isCreating, setIsCreating] = useState(false);
   const [form, setForm] = useState<MaterialRequestDetailData>({
     ...materialRequest,
+    requester_name: materialRequest.requester_name || "",
     date: formatDateOnly(materialRequest.date),
     created_at: formatDate(materialRequest.created_at),
     updated_at: formatDate(materialRequest.updated_at),
@@ -191,17 +193,17 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
       }
 
       const created = await response.json();
-      const newItem = created?.data || createForm;
+      const newItem: MaterialRequestDetailItem = created?.data || createForm;
       const newDetail: MaterialRequestDetailItem = {
-        id: (newItem as any)?.id ? String((newItem as any).id) : String(Math.random()),
+        id: newItem?.id ? String(newItem.id) : String(Math.random()),
         material_request_id: materialRequest.id,
-        material_name: (newItem as any)?.material_name || "",
-        description: (newItem as any)?.description,
-        quantity: (newItem as any)?.quantity ?? 0,
-        unit: (newItem as any)?.unit,
-        type: (newItem as any)?.type,
-        created_at: (newItem as any)?.created_at,
-        updated_at: (newItem as any)?.updated_at,
+        material_name: newItem?.material_name || "",
+        description: newItem?.description || "",
+        quantity: newItem?.quantity ?? 0,
+        unit: newItem?.unit || "",
+        type: newItem?.type || "",
+        created_at: newItem?.created_at || "",
+        updated_at: newItem?.updated_at || "",
       };
       setDetailItems((prev) => [...prev, newDetail]);
       closeCreateDialog();
@@ -254,6 +256,7 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
       const statusCode = STATUS_OPTIONS.find(opt => opt.label === form.status_name)?.value || "0";
       const dataToSave = {
         title: form.title,
+        requester_name: form.requester_name,
         date: form.date,
         status: statusCode,
         note: form.note || "",
@@ -282,6 +285,7 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
 
   const formFields = useMemo(() => [
     { key: "title", label: "Title", type: "text", editable: true, inputType: "text" },
+    { key: "requester_name", label: "Requester", type: "text", editable: true, inputType: "text" },
     { key: "date", label: "Requested Date", type: "date", editable: true, inputType: "date" },
     { key: "status_name", label: "Status", type: "text", editable: true, inputType: "select" },
     { key: "note", label: "Note", type: "text", editable: true, inputType: "text" },

@@ -13,6 +13,7 @@ interface MaterialRequestResponse {
     note?: string;
     created_at?: string;
     updated_at?: string;
+    requester_name?: string;
     material_request_details?: Array<{
         id?: string;
         material_request_id?: string;
@@ -52,6 +53,7 @@ async function getMaterialRequestById(id: string): Promise<{ materialRequest: Ma
     materialRequest: {
       id: request.id,
       title: request.title || "",
+      requester_name: request.requester_name || "",
       date: request.date || "",
       status_name: request.status_name || request.status || "Unknown",
       note: request.note || "",
