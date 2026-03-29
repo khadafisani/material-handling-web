@@ -26,7 +26,7 @@ interface CreateMaterialRequestDetailItem {
 
 interface CreateMaterialRequestFormData {
   title: string;
-  requester_by: string;
+  requester_name: string;
   date: string;
   note?: string;
 }
@@ -47,7 +47,7 @@ export default function CreateMaterialRequestPage() {
 
   const [form, setForm] = useState<CreateMaterialRequestFormData>({
     title: "",
-    requester_by: "",
+    requester_name: "",
     date: formatDateOnly(new Date().toISOString()),
     note: "",
   });
@@ -157,7 +157,7 @@ export default function CreateMaterialRequestPage() {
   };
 
   const handleSubmit = async () => {
-    if (!form.title || !form.requester_by || !form.date) {
+    if (!form.title || !form.requester_name || !form.date) {
       alert("Please fill in all required fields");
       return;
     }
@@ -171,7 +171,7 @@ export default function CreateMaterialRequestPage() {
 
     const payload = {
       title: form.title,
-      requester_by: form.requester_by,
+      requester_name: form.requester_name,
       date: form.date,
       note: form.note || "",
       material_request_details: detailItems.map((item) => ({
@@ -211,7 +211,7 @@ export default function CreateMaterialRequestPage() {
   const formFields = useMemo(
     () => [
       { key: "title", label: "Title", inputType: "text" },
-      { key: "requester_by", label: "Requester", inputType: "text" },
+      { key: "requester_name", label: "Requester", inputType: "text" },
       { key: "date", label: "Requested Date", inputType: "date" },
       { key: "note", label: "Note", inputType: "text" },
     ] as const,

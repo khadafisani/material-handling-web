@@ -6,6 +6,13 @@ import { Eye } from "lucide-react";
 
 export const columns: ColumnDef<Item>[] = [
   {
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => {
+      return <div>{row.getValue("id")}</div>;
+    }
+  },
+  {
     accessorKey: "title",
     header: "Title",
   },
