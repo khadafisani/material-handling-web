@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Pencil, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 const formatDate = (dateString?: string): string => {
@@ -74,6 +75,7 @@ interface MaterialRequestDetailProps {
 }
 
 export function MaterialRequestDetail({ materialRequest, details }: MaterialRequestDetailProps) {
+  const router = useRouter();
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
@@ -88,6 +90,9 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [createForm, setCreateForm] = useState<Partial<MaterialRequestDetailItem> | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [isDeleteRequestDialogOpen, setIsDeleteRequestDialogOpen] = useState(false);
+  const [isDeletingRequest, setIsDeletingRequest] = useState(false);
+
   const [form, setForm] = useState<MaterialRequestDetailData>({
     ...materialRequest,
     requester_name: materialRequest.requester_name || "",
@@ -148,6 +153,31 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
       console.error("Delete detail error:", error);
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const openDeleteRequestDialog = () => setIsDeleteRequestDialogOpen(true);
+  const closeDeleteRequestDialog = () => setIsDeleteRequestDialogOpen(false);
+
+  const deleteRequest = async () => {
+    setIsDeletingRequest(true);
+    try {
+      const response = await fetch(`http://localhost:3001/api/v1/material-requests/${materialRequest.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete material request");
+      }
+
+      console.log("Material request deleted successfully");
+      closeDeleteRequestDialog();
+      router.push("/");
+    } catch (error) {
+      console.error("Error deleting material request:", error);
+      alert("Failed to delete material request.");
+    } finally {
+      setIsDeletingRequest(false);
     }
   };
 
@@ -301,11 +331,15 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
             <Button variant="default" onClick={() => setIsEditMode(true)}>
               Edit
             </Button>
+            
           ) : (
             <Button variant="secondary" onClick={save} disabled={isSaving}>
               {isSaving ? "Saving..." : "Save"}
             </Button>
           )}
+          <Button variant="destructive" onClick={openDeleteRequestDialog} disabled={isDeletingRequest} className="text-white">
+            Delete
+          </Button>
         </div>
       </div>
 
@@ -320,7 +354,6 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
                 onChange={(e) => onInputChange(field.key, e.target.value)}
                 className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none ${isEditMode && field.editable ? "border-sky-500 focus:ring-2 focus:ring-sky-300" : "border-gray-200 bg-gray-50"}`}
               >
-                <option value="">Select Status</option>
                 {STATUS_OPTIONS.map((opt) => (
                   <option key={opt.label} value={opt.label}>
                     {opt.label}
@@ -536,6 +569,30 @@ export function MaterialRequestDetail({ materialRequest, details }: MaterialRequ
             </DialogClose>
             <Button onClick={createDetail} disabled={isCreating}>
               {isCreating ? "Creating..." : "Create"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isDeleteRequestDialogOpen} onOpenChange={setIsDeleteRequestDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Material Request</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this material request? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="py-2">
+            <p className="text-sm">Title: {materialRequest.title}</p>
+          </div>
+
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={deleteRequest} disabled={isDeletingRequest} variant="destructive" className="text-white">
+              {isDeletingRequest ? "Deleting..." : "Delete"}
             </Button>
           </DialogFooter>
         </DialogContent>

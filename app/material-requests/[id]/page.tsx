@@ -29,7 +29,6 @@ interface MaterialRequestResponse {
 }
 
 async function getMaterialRequestById(id: string): Promise<{ materialRequest: MaterialRequestDetailData; details: MaterialRequestDetailItem[] }> {
-  console.log('fetch', id)
     const response = await fetch(`http://localhost:3001/api/v1/material-requests/${id}`, {
     headers: { "Content-Type": "application/json" },
     cache: "no-store",
